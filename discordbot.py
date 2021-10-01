@@ -48,11 +48,10 @@ async def loop():
             await channel_sent.send("今日は違います")
 
 
-
 @client.event
 async def on_ready():
     global channel_sent
-    channel_id = getenv('CHANNEL_ID')
+    channel_id = getenv("CHANNEL_ID")
     channel_sent = client.get_channel(channel_id)
 
     global last_update
@@ -64,5 +63,5 @@ async def on_ready():
     loop.start()
 
 
-token = getenv('DISCORD_BOT_TOKEN')
+token = getenv("DISCORD_BOT_TOKEN")
 client.run(token)
