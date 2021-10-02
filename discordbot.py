@@ -43,7 +43,7 @@ async def reply(message):
     elif "次の更新日は?" in message.content:
         await message.channel.send(f"{last_update}だぞ！")
     else:
-        await message.channel.send(f'{message.author.mention} 腹が減ったのか？')
+        await message.channel.send(f"{message.author.mention} 腹が減ったのか？")
 
 
 @client.event
@@ -62,7 +62,9 @@ async def loop():
     channel_id = getenv("CHANNEL_ID")
     channel_sent = client.get_channel(channel_id)
 
-    if last_update != publish_date:
+    if last_update is None:
+        last_update = publish_date
+    elif last_update != publish_date:
         last_update = publish_date
         await channel_sent.send(
             "@everyone 今日はクッキングパパの更新日だぞ！\nhttps://comic-days.com/episode/13932016480031248230"
@@ -73,8 +75,6 @@ async def loop():
 
 @client.event
 async def on_ready():
-    global last_update
-    last_update = scrape_publish_date()
     loop.start()
 
 
