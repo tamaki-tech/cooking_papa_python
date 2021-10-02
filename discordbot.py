@@ -1,4 +1,3 @@
-import chromedriver_binary
 from discord.ext import tasks
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
