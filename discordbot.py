@@ -48,6 +48,7 @@ async def loop():
     if channel_sent is not None:
         global last_update
         publish_date = re.sub(r"\D", "", scrape_publish_date())
+
         if last_update != publish_date:
             await channel_sent.send(
                 "@everyone 今日はクッキングパパの更新日だぞ！\nhttps://comic-days.com/episode/13932016480031248230"
@@ -65,10 +66,6 @@ async def on_ready():
 
     global last_update
     last_update = re.sub(r"\D", "", scrape_publish_date())
-
-    await channel_sent.send(
-        "クッキングパパの無料公開日をお知らせするぞ！\n次回更は" + scrape_publish_date() + "だ！"
-    )
     loop.start()
 
 
