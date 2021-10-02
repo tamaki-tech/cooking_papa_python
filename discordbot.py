@@ -16,6 +16,7 @@ def scrape_publish_date():
     options.add_argument('--proxy-server="direct://"')
     options.add_argument("--proxy-bypass-list=*")
     options.add_argument("--start-maximized")
+    options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--headless")
 
     driver = webdriver.Chrome(options=options)
