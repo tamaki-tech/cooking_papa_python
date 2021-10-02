@@ -34,6 +34,15 @@ def scrape_publish_date():
     return next_update_date.text
 
 
+@client.event
+async def on_message(message):
+    # 送信者がbotである場合は弾く
+    if message.author.bot:
+        return
+    if message.content == "/lastUpdate":
+        await message.channel.send(last_update)
+
+
 @tasks.loop(minutes=10)
 async def loop():
     if channel_sent is not None:
