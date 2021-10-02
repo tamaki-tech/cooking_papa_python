@@ -60,8 +60,7 @@ async def loop():
 @client.event
 async def on_ready():
     global channel_sent
-    # channel_id = getenv("CHANNEL_ID")
-    channel_id = 730334749490675776
+    channel_id = getenv("CHANNEL_ID")
     channel_sent = client.get_channel(channel_id)
 
     global last_update
@@ -73,6 +72,5 @@ async def on_ready():
     loop.start()
 
 
-# token = getenv("DISCORD_BOT_TOKEN")
-token = "ODkyNTU3Mzg4NjMxMTI2MDM2.YVOo2A.yxUUoeWXAlExcjNzcyT5h6U1o9g"
+token = getenv("DISCORD_BOT_TOKEN")
 client.run(token)
