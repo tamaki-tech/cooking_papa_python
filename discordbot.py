@@ -12,7 +12,7 @@ last_update = None
 
 
 def scrape_publish_date():
-    driver_path = "./chromedriver"
+    # driver_path = "./chromedriver"
     options = Options()
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-extensions")
@@ -21,7 +21,7 @@ def scrape_publish_date():
     options.add_argument("--start-maximized")
     options.add_argument("--headless")
 
-    driver = webdriver.Chrome(executable_path=driver_path, options=options)
+    driver = webdriver.Chrome(options=options)
 
     driver.get("https://comic-days.com/episode/13932016480031248230")
 
