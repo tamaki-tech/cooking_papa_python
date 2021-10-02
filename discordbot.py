@@ -28,8 +28,12 @@ def scrape_publish_date():
 
     time.sleep(5)
 
-    next_update_date = driver.find_element_by_xpath("//p[@class='episode-read-date']")
-    return next_update_date.text
+    next_update_date = driver.find_element_by_xpath("//p[@class='episode-read-date']").text
+
+    driver.close()
+    driver.quit()
+
+    return next_update_date
 
 
 async def reply(message):
