@@ -55,12 +55,12 @@ async def on_message(message):
         await reply(message)
 
 
-@tasks.loop(minutes=10)
+@tasks.loop(minutes=5)
 async def loop():
     global last_update
     publish_date = scrape_publish_date()
 
-    channel_id = getenv("CHANNEL_ID")
+    channel_id = int(getenv("CHANNEL_ID"))
     channel_sent = client.get_channel(channel_id)
 
     if last_update is None:
@@ -71,7 +71,7 @@ async def loop():
             "@everyone 今日はクッキングパパの更新日だぞ！\nhttps://comic-days.com/episode/13932016480031248230"
         )
     else:
-        await channel_sent.send("今日は違います")
+        await channel_sent.send("今日は違います(test)")
 
 
 @client.event
