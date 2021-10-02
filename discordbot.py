@@ -1,4 +1,4 @@
-from discord.ext import tasks, commands
+from discord.ext import tasks
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from os import getenv
