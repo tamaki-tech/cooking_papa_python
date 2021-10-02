@@ -70,8 +70,6 @@ async def loop():
         await channel_sent.send(
             "@everyone 今日はクッキングパパの更新日だぞ！\nhttps://comic-days.com/episode/13932016480031248230"
         )
-    else:
-        await channel_sent.send("今日は違います(test)")
 
 
 @client.event
