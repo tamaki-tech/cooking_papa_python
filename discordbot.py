@@ -4,15 +4,12 @@ from selenium.webdriver.chrome.options import Options
 from os import getenv
 import discord
 import time
-import re
 
 client = discord.Client()
-channel_sent = None
 last_update = None
 
 
 def scrape_publish_date():
-    # driver_path = "./chromedriver"
     options = Options()
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-extensions")
@@ -34,38 +31,50 @@ def scrape_publish_date():
     return next_update_date.text
 
 
+async def reply(message):
+    """
+    botに対するリプライをハンドリングします。
+    """
+    if "使い方" in message.content:
+        reply = (
+            "コミックデイズにてクッキングパパの無料公開がされた事をみんなに伝えるbotだぞ！\n`次の更新日は?`とリプライすると次の更新日を教えるぞ！うむ！"
+        )
+        await message.channel.send(reply)
+    elif "次の更新日は?" in message.content:
+        await message.channel.send(f"{last_update}だぞ！")
+    else:
+        await message.channel.send(f'{message.author.mention} 腹が減ったのか？')
+
+
 @client.event
 async def on_message(message):
-    # 送信者がbotである場合は弾く
     if message.author.bot:
         return
-    if message.content == "/lastUpdate":
-        await message.channel.send(last_update)
+    if client.user in message.mentions:
+        await reply(message)
 
 
 @tasks.loop(minutes=10)
 async def loop():
-    if channel_sent is not None:
-        global last_update
-        publish_date = re.sub(r"\D", "", scrape_publish_date())
+    global last_update
+    publish_date = scrape_publish_date()
 
-        if last_update != publish_date:
-            await channel_sent.send(
-                "@everyone 今日はクッキングパパの更新日だぞ！\nhttps://comic-days.com/episode/13932016480031248230"
-            )
-            last_update = publish_date
-        else:
-            await channel_sent.send("今日は違います")
+    channel_id = getenv("CHANNEL_ID")
+    channel_sent = client.get_channel(channel_id)
+
+    if last_update != publish_date:
+        last_update = publish_date
+        await channel_sent.send(
+            "@everyone 今日はクッキングパパの更新日だぞ！\nhttps://comic-days.com/episode/13932016480031248230"
+        )
+    else:
+        await channel_sent.send("今日は違います")
 
 
 @client.event
 async def on_ready():
-    global channel_sent
-    channel_id = getenv("CHANNEL_ID")
-    channel_sent = client.get_channel(channel_id)
-
     global last_update
-    last_update = re.sub(r"\D", "", scrape_publish_date())
+    last_update = scrape_publish_date()
     loop.start()
 
 
