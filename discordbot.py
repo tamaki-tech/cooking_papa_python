@@ -1,4 +1,4 @@
-from discord.ext import tasks
+from discord.ext import tasks, commands
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from os import getenv
@@ -34,6 +34,15 @@ def scrape_publish_date():
     return next_update_date.text
 
 
+@client.event
+async def on_message(message):
+    # 送信者がbotである場合は弾く
+    if message.author.bot:
+        return
+    if message.content == "/lastUpdate":
+        await message.channel.send(last_update)
+
+
 @tasks.loop(minutes=10)
 async def loop():
     if channel_sent is not None:
@@ -51,7 +60,8 @@ async def loop():
 @client.event
 async def on_ready():
     global channel_sent
-    channel_id = getenv("CHANNEL_ID")
+    # channel_id = getenv("CHANNEL_ID")
+    channel_id = 730334749490675776
     channel_sent = client.get_channel(channel_id)
 
     global last_update
@@ -63,5 +73,6 @@ async def on_ready():
     loop.start()
 
 
-token = getenv("DISCORD_BOT_TOKEN")
+# token = getenv("DISCORD_BOT_TOKEN")
+token = "ODkyNTU3Mzg4NjMxMTI2MDM2.YVOo2A.yxUUoeWXAlExcjNzcyT5h6U1o9g"
 client.run(token)
