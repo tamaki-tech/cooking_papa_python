@@ -10,6 +10,7 @@ client = discord.Client()
 last_update = None
 driver = None
 
+
 def create_driver():
     options = Options()
     options.add_argument("--disable-gpu")
@@ -22,6 +23,7 @@ def create_driver():
 
     driver = webdriver.Chrome(options=options)
     return driver
+
 
 def scrape_publish_date():
     """
@@ -38,11 +40,8 @@ def scrape_publish_date():
 
     time.sleep(5)
 
-    next_update_date = driver.find_element_by_xpath("//p[@class='episode-read-date']").text
-
-    driver.close()
-    driver.quit()
-
+    next_update_date = driver.find_element_by_xpath(
+        "//p[@class='episode-read-date']").text
     return next_update_date
 
 
