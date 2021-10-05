@@ -1,3 +1,4 @@
+from lib2to3.pgen2 import driver
 from discord.ext import tasks
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -7,9 +8,9 @@ import time
 
 client = discord.Client()
 last_update = None
+driver = None
 
-
-def scrape_publish_date():
+def create_driver():
     options = Options()
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-extensions")
@@ -20,6 +21,15 @@ def scrape_publish_date():
     options.add_argument("--headless")
 
     driver = webdriver.Chrome(options=options)
+    return driver
+
+def scrape_publish_date():
+    """
+    コミックデイズからクッキングパパの次回無料公開日をスクレイピングします。
+    """
+    global driver
+    if driver is None:
+        driver = create_driver()
 
     driver.get("https://comic-days.com/episode/13932016480031248230")
 
@@ -59,7 +69,7 @@ async def on_message(message):
         await reply(message)
 
 
-@tasks.loop(minutes=5)
+@tasks.loop(minutes=30)
 async def loop():
     global last_update
     publish_date = scrape_publish_date()
