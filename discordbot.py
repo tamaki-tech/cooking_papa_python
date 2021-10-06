@@ -81,7 +81,7 @@ async def loop():
     elif last_update != publish_date:
         last_update = publish_date
         await channel_sent.send(
-            "@everyone 今日はクッキングパパの更新日だぞ！\nhttps://comic-days.com/episode/13932016480031248230"
+            "今日はクッキングパパの更新日だぞ！\nhttps://comic-days.com/episode/13932016480031248230"
         )
 
 
